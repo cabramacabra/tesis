@@ -1,0 +1,150 @@
+' 15/6/2017 Script converted from "Expert list"
+'
+APP.LogActive = True        ' Activate output
+'
+On Error Resume Next
+'Parameters(2930, 0) = 1                 'CO: Val fijo M [Nm]
+' Script_2
+'aca abre el archivo y lo opera
+
+'Set xl=CreateObject("Excel.application")
+'
+'Set wb = xl.activeworkbook
+'
+''xl.Application.Workbooks.Open "C:\a1.xlsx" ' direccion del excel ponerlo en la zona mas accesible para el programa
+'xl.Application.Visible = True
+'
+'xl.worksheets(1).Activate 'seleccion del worksheet
+'xl.cells(1,1).Value="hola123"
+''xl.sheet1.cells(1,1).Value=2456
+
+'para operar el archivo abierto
+
+Dim preg
+Dim i
+
+Call main_core
+i=0
+    
+Do until i >0
+   preg=MsgBox("Desea realizar otro ensayo?", vbYesNo, "BANCO JMS de cuplas peludas")
+   If preg=vbyes Then Call main_core
+   If preg=vbNo Then i=100 
+Loop
+
+Sub main_core()
+Dim cuplas (10)
+Dim i
+Dim j
+Dim seg
+Dim pi
+Dim flujo
+Dim caso
+Dim val
+Dim vel
+
+pi=4*Atn(1)
+
+Set xcl = GetObject( , "Excel.Application")
+
+Set wbk = xcl.activeworkbook
+
+Set xl = wbk.sheets(1)
+
+Set bl=wbk.sheets(2)
+
+Set arch=wbk.sheets(3)
+
+
+
+
+bl.cells(1,2).Value=-4
+
+xcl.Visible=True
+
+Set objshell=CreateObject("WScript.Shell")
+objShell.AppActivate xcl.Name
+
+
+xcl.run "GUIv2"
+
+
+
+Do until flujo >0
+    flujo=bl.cells(1,2).Value
+    caso=bl.cells(2,2).Value 
+    val=bl.cells(3,2).Value
+Loop
+
+MsgBox(flujo)
+Select Case caso
+    Case 1
+        MsgBox("cupla cte") 
+        vel=Parameters(61,0)
+        
+        Call trazador_lin(vel,val)
+        
+    Case "Sara"
+        document.Write("Seen any slick sunglasses Sara?")
+        MsgBox("saraaaaa")
+    Case "Charles"
+        document.Write("Did you chuck your chowder Charles?")
+        
+End Select
+    
+
+MsgBox("termino el ensayo")
+
+    bl.cells(1,2).Value=-66
+    xcl.run "archivador"
+ 
+End Sub
+
+
+
+
+    
+
+
+
+On Error GoTo 0
+
+Sub trazador_lin(vel,cupla)
+    Dim i
+    Dim j
+    Set xcl = GetObject( , "Excel.Application")       
+    Set wbk = xcl.activeworkbook
+    Set xl = wbk.sheets(1)
+    Set bl=wbk.sheets(2)
+    Set arch=wbk.sheets(3)
+    
+    For i=2 TO 10
+        arch.cells(i,1).Value=vel
+    Next   
+    Parameters(2930,0)=cupla
+    For i=11 TO 80
+        arch.cells(i,1).Value=Parameters(61,0)
+        arch.cells(i,2).Value=Parameters(2930,0)
+    Next  
+    
+ 
+ End Sub   
+
+
+Function par(i)
+'   ver libreria mod
+End Function
+
+Function Timer(seg) 
+'    retrasa el flujo del proceso durante x segundos, recibe la funcion segundo y devuelve un token para indicar que la funcion se 
+'ejecuto de manera correcta
+    Dim t
+    Dim dteWait
+    t=seg
+    dteWait = DateAdd("s", t, now())
+    Do until (now() > dteWait)
+Loop
+    Timer=seg
+
+End Function' cte
+
